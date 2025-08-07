@@ -1,0 +1,16 @@
+<div class="upload-container">
+  <div class="file-input">
+    <input type="file" id="file" (change)="onFileSelected($event)" accept=".log,.txt" />
+    <label for="file">Choose a log file...</label>
+    <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+  </div>
+  
+  <button (click)="uploadFile()" [disabled]="!selectedFile || isLoading">
+    <span *ngIf="!isLoading">Upload</span>
+    <span *ngIf="isLoading">Uploading...</span>
+  </button>
+  
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+</div>

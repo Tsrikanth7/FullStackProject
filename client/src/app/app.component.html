@@ -1,0 +1,15 @@
+<div class="app-container">
+  <header>
+    <h1>{{ title }}</h1>
+  </header>
+
+  <main>
+    <section class="upload-section">
+      <app-log-uploader (uploadComplete)="diagnosticsTable.loadData()"></app-log-uploader>
+    </section>
+
+    <section class="table-section">
+      <app-diagnostics-table #diagnosticsTable></app-diagnostics-table>
+    </section>
+  </main>
+</div>

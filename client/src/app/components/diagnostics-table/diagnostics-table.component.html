@@ -1,0 +1,80 @@
+<div class="filters-container">
+  <div class="filter-group">
+    <label for="vehicleId">Vehicle ID:</label>
+    <input id="vehicleId" [(ngModel)]="filters.vehicleId" (keyup.enter)="applyFilters()">
+  </div>
+
+  <div class="filter-group">
+    <label for="severity">Severity:</label>
+    <select id="severity" [(ngModel)]="filters.severity" (change)="applyFilters()">
+      <option *ngFor="let option of severityOptions" [value]="option.value">{{ option.label }}</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label for="errorCode">Error Code:</label>
+    <input id="errorCode" [(ngModel)]="filters.errorCode" (keyup.enter)="applyFilters()">
+  </div>
+
+  <div class="filter-group">
+    <label for="fromDate">From:</label>
+    <input id="fromDate" type="date" [(ngModel)]="filters.fromDate" (change)="applyFilters()">
+  </div>
+
+  <div class="filter-group">
+    <label for="toDate">To:</label>
+    <input id="toDate" type="date" [(ngModel)]="filters.toDate" (change)="applyFilters()">
+  </div>
+  <div class="filter-group">
+  <label for="logLevel">Log Level:</label>
+  <select id="logLevel" [(ngModel)]="filters.logLevel" (change)="applyFilters()">
+    <option *ngFor="let option of logLevelOptions" [value]="option.value">{{ option.label }}</option>
+  </select>
+</div>
+
+  <button (click)="applyFilters()" [disabled]="isLoading">Apply Filters</button>
+</div>
+
+<div class="table-container" *ngIf="!isLoading; else loading">
+  <!-- Add logLevel column to the table -->
+<table>
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Vehicle ID</th>
+      <th>Level</th>
+      <th>Code</th>
+      <th>Message</th>
+      <th>Severity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let entry of data" [class]="'severity-' + entry.severity">
+      <td>{{ entry.timestamp | date:'medium' }}</td>
+      <td>{{ entry.vehicleId }}</td>
+      <td class="log-level {{ entry.logLevel }}">{{ entry.logLevel }}</td>
+      <td>{{ entry.errorCode }}</td>
+      <td>{{ entry.message }}</td>
+      <td>
+        <span class="severity-badge">{{ entry.severity }}</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+  <div *ngIf="data.length === 0" class="no-data">
+    No diagnostic entries found
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-spinner">
+    Loading...
+  </div>
+</ng-template>
+
+<div class="pagination" *ngIf="total > 0">
+  <button [disabled]="page === 1" (click)="onPageChange(page - 1)">Previous</button>
+  <span>Page {{ page }} of {{ Math.ceil(total / pageSize) }}</span>
+  <button [disabled]="page * pageSize >= total" (click)="onPageChange(page + 1)">Next</button>
+</div>
