@@ -75,6 +75,6 @@
 
 <div class="pagination" *ngIf="total > 0">
   <button [disabled]="page === 1" (click)="onPageChange(page - 1)">Previous</button>
-  <span>Page {{ page }} of {{ Math.ceil(total / pageSize) }}</span>
+  <span>Page {{ page }} of {{ total / pageSize }}</span>
   <button [disabled]="page * pageSize >= total" (click)="onPageChange(page + 1)">Next</button>
 </div>
